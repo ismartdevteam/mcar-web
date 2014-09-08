@@ -104,6 +104,7 @@ class Query {
                         $subrow[$carIndex]['description'] = $rows['description'];
                         $subrow[$carIndex]['contact'] = $rows['contact'];
                         $subrow[$carIndex]['address'] = $rows['address'];
+                        $subrow[$carIndex]['video_url'] = $rows['video_url'];
                         $subrow[$carIndex]['location'] = $rows['location'];
                         $subrow[$carIndex]['phone'] = $rows['phone'];
                         $subrow[$carIndex]['order'] = $rows['order'];
