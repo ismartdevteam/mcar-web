@@ -24,7 +24,7 @@ class Query {
     public static function getCar() {
         $db = DataBase::getInstance();
         $query = "select s.id as seller_id, s.name as seller_name, c.id as id,mark.id mark_id,mark.name as mark_name ,cat.id category_id,cat.name as category_name,m.id model_id,m.name as model,body.id body_id,body.name as body_name,
-     c.modification,c.status,c.transmission,c.distance,dr.name as drivetrain,c.engine,c.price,c.fuel,c.viewcount, c.created_date,
+     c.modification,c.status,c.transmission,c.distance,c.distance_type ,c.year,dr.name as drivetrain,c.engine,c.price,c.fuel,c.viewcount, c.created_date,
             c.image_url ,c.order from car c left join body on c.body_id=body.id
  left join category_car  cat on c.category_car_id=cat.id left join model m on c.model_id=m.id 
 left join mark on mark.id=m.mark_id  left join seller as s on c.seller_id=s.id
@@ -88,10 +88,10 @@ left join mark on mark.id=m.mark_id  left join seller as s on c.seller_id=s.id
         if ($check) {
             if ($check->num_rows > 0) {
                 $result = Error_message::Error_number(1000);
-                $comId = 0;
-                $carIndex = -1;
-                $imageId = 0;
-                $imageIndex = -1;
+//                $comId = 0;
+//                $carIndex = -1;
+//                $imageId = 0;
+//                $imageIndex = -1;
                 $subrow = array();
                 while ($rows = mysqli_fetch_assoc($check)) {
 
@@ -108,14 +108,14 @@ left join mark on mark.id=m.mark_id  left join seller as s on c.seller_id=s.id
         return $result;
     }
 
-    public static function getAds($index) {
+    public static function getAds($index,$catId) {
         $perPage = 10;
         $db = DataBase::getInstance();
-        $query = " select a.id ,c.id category_id,
-c.name category_name,a.title,a.desc,a.price,a.phone,a.created_date,a.code, a.images, a.order_status 
+        $query = " select a.id ,c.id category_id,a.title,a.desc,a.price,a.phone,a.created_date,a.code, a.images, a.order_status 
 from ads a
-left join category_car c on a.category_car_id=c.id 
+left join category_car c on a.category_car_id=c.id where c.id=$catId 
  order by a.order_status asc, a.created_date desc limit $index,$perPage;";
+     
         $check = $db->query($query);
         if ($check) {
             $numData = $check->num_rows;
@@ -191,6 +191,29 @@ join image_seller img on s.id=img.seller_id where s.id=$id;";
                 $result = Error_message::Error_number(1000);
             else
                 $result = Error_message::Error_number(1001);
+        } else {
+            $result = Error_message::Error_number(2001);
+        }
+        return $result;
+    }
+ public static function getAdsCat() {
+        $db = DataBase::getInstance();
+        $query = "select distinct c.id, c.name from ads a left join category_car c  on a.category_car_id=c.id order by c.id;";
+        $check = $db->query($query);
+        if ($check) {
+            if ($check->num_rows > 0) {
+                $result = Error_message::Error_number(1000);
+
+                $subrow = array();
+                while ($rows = mysqli_fetch_assoc($check)) {
+
+                    $subrow[]=$rows;
+                   
+                }
+                $result['data'] = $subrow;
+            } else {
+                $result = Error_message::Error_number(1001);
+            }
         } else {
             $result = Error_message::Error_number(2001);
         }
