@@ -23,8 +23,8 @@ class Query {
 
     public static function getCar() {
         $db = DataBase::getInstance();
-        $query = "select s.id as seller_id, s.name as seller_name, c.id as id,mark.id mark_id,mark.name as mark_name ,cat.id category_id,cat.name as category_name,m.id model_id,m.name as model,body.id body_id,body.name as body_name,
-     c.modification,c.status,c.transmission,c.distance,c.distance_type ,c.year,dr.name as drivetrain,c.engine,c.price,c.fuel,c.viewcount, c.created_date,
+        $query = "select s.id as seller_id, s.name as seller_name, c.id as id,mark.id mark_id,mark.name as mark_name ,mark.image_url as mark_image,cat.id category_id,cat.name as category_name,m.id model_id,m.name as model,body.id body_id,body.name as body_name,
+     c.modification,c.status,c.transmission,c.distance,c.distance_type,c.roller_type ,c.year,dr.name as drivetrain,c.engine,c.price,c.fuel,c.viewcount, c.created_date,
             c.image_url ,c.order from car c left join body on c.body_id=body.id
  left join category_car  cat on c.category_car_id=cat.id left join model m on c.model_id=m.id 
 left join mark on mark.id=m.mark_id  left join seller as s on c.seller_id=s.id
